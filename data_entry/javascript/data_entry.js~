@@ -1,0 +1,81 @@
+$( function() {
+  var autoComplete = {};
+  autoComplete['autoFields'] = ['Program Teams', 'Categories', 'Subcategories']
+  var json_post = JSON.stringify(autoComplete);
+  $.post("wsgi-scripts/auto_data.py", json_post, function( data ) {
+    console.log( data );
+    createPage( data );
+    });
+
+  function split( val ) {
+    return val.split( /,\s*/ );
+  }
+
+  function extractLast( term ) {
+    return split( term ).pop();
+  }
+
+  function createTable ( schema, schemaType ) {
+    var id = schemaType + "t";
+    var table = '<table id="' + id +
+    '"><tr><th>Name</th><th>Value</th>' +
+    '</tr>';
+    var tabSelector = "#" + schemaType;
+
+    for (var key in schema) {
+      var tableRow = '<tr><td>' + key + ':</td><td>';
+      var rowEnding;
+      if ( schema[key] instanceof Array ) {
+        tableRow += '<textarea wrap="soft" class="multiple';
+        rowEnding = '</textarea>';
+      }
+      else{
+        tableRow += '<input type="text" class="single';
+        rowEnding = '</input>';
+      }
+      tableRow += " " + schemaType;
+      if ( key in autoComplete ){
+        tableRow +=' autoComplete"';
+      }
+      else{
+        tableRow +='"';
+      }
+      tableRow += ' data-label="' + key +
+      '">' + rowEnding + '</td><td><button class="helpBtn ' +
+      schemaType + 'b">test</button>' + '</td></tr>';
+      table += tableRow;
+    }
+
+    var submitBtns = '<tr><td></td><td>' +
+    '<button id="append">Add</button>' +
+    '<button id="submit">Submit</button></td>' +
+    '<td><button class="helpBtn" id="lastHelp"' +
+    '>test</button></td></tr></table>';
+    table += submitBtns;
+    $( tabSelector ).append( table);
+    $( ".helpBtn" ).button({
+      icons: {
+        primary: "ui-icon-help"
+        },
+      text: false
+     });
+    return
+  }
+
+  function createPage ( pageData ) {
+    var schemas = pageData['Schemas'];
+    for ( var i = 0; i < schemas.length; i++ ) {
+      var schemaType = schemas[i]['Type'];
+      var html = '<li><a href="#' + schemaType + '">' +
+      schemaType + '</a></li>';
+      $( '#schemaLinks' ).append( html );
+      html = '<div id="' + schemaType + '">' + '</div>';
+      $( '#tabs' ).append(html);
+      createTable( schemas[i]['Schema'][0], schemaType );
+    }
+
+    $( '#tabs' ).tabs();
+
+  }
+
+});

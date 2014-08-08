@@ -190,6 +190,6 @@ $( function() {
     $( '.sortable' ).sortable();
     $( '.sortable' ).disableSelection();
     $( '#tabs' ).tabs();
+    $( 'textarea' ).autosize();  
   }
-
 });

@@ -1,18 +1,51 @@
+var schemaList = {};
 $( function() {
   var autoComplete = {};
   autoComplete['autoFields'] = ['Program Teams', 'Categories', 'Subcategories',
   'Display Software Columns', 'Display Pubs Columns', 'Long Name', 'DARPA Office'];
   var json_post = JSON.stringify(autoComplete);
-
   $.post("/wsgi-scripts/auto_data.py", json_post, function( data ) {
     console.log( data );
     createPage( data );
     });
 
   $( "#submitTxt" ).hide();
+  
+  function validate( multiple, attribute ) {
+    var validAttr = attribute.trim();
+
+    if (validAttr == "") 
+      return validAttr;
+
+    if ( multiple ) {
+      var valueList = validAttr.split(/\r\n|\n|\r/);     
+      for( var i = 0; i < valueList.length; i++ ) {
+        var value = valueList[i];
+        if (value == "") {
+          validAttr = "Error: List contains an empty/non-existant value.";
+          break;
+        }
+        valueList[i] = value.trim();
+      }   
+      validAttr = valueList; 
+    }
+
+    return validAttr
+  }
+
+  function blankSchema( schema ) {
+    for (var attribute in schema) {
+      if( schema[attribute] instanceof Array ) {
+        schema[attribute] = [];
+      }
+      else {
+        schema[attribute] = "";
+      }
+    }
+  }
 
   function split( val ) {
-    return val.split( /,\s*/ );
+    return val.split( /\n\s*/ );
   }
 
   function extractLast( term ) {
@@ -24,12 +57,11 @@ $( function() {
     for ( var i = 0; i < checkBoxes.length; i++ ) {
       selectValue = checkBoxes[i];
       html += '<li class="ui-state-default">';
-      //html += '<span class="ui-icon ui-icon-arrowthick-2-n-s"></span>';
       html += '<input type="checkbox" name="' + dataLabel +
       '" value="' + selectValue + '" class="' + schemaType +
       '" checked="checked">' + selectValue + '<br>';
-
     }
+
     return html;
   }
 
@@ -81,7 +113,7 @@ $( function() {
     }
 
     var submitBtns = '<tr><td></td><td class="lastRow">' +
-    '<button class="append">Add</button>' +
+    '<button class="append" schema="'+ schemaType +'">Add</button>' +
     '<button class="submit">Submit</button></td>' +
     '<td><button class="helpBtn lastHelp"' +
     '>Help</button></td></tr></table>';
@@ -116,20 +148,34 @@ $( function() {
   }
 
   function createPage ( pageData ) {
+    var schemaObject = {};
     var schemas = pageData['Schemas'];
     var pubsColumns = pageData['Auto_Data']['Display Pubs Columns'];
     var softwareColumns = pageData['Auto_Data']['Display Software Columns'];
+
     for ( var i = 0; i < schemas.length; i++ ) {
       var schemaType = schemas[i]['Type'];
+      var schemaCopy = schemas[i]['Schema'][0];
       var html = '<li><a href="#' + schemaType + '">' +
       schemaType + '</a></li>';
+
       $( '#schemaLinks' ).append( html );
       html = '<div id="' + schemaType + '">' + '</div>';
       $( '#tabs' ).append(html);
-     
-      createTable( schemas[i]['Schema'][0], schemaType, pubsColumns, softwareColumns );
+      blankSchema( schemaCopy );
+      schemaObject[schemaType] = schemaCopy;
+      createTable( schemaCopy, schemaType, pubsColumns, softwareColumns );
     }
-    
+
+    $( ".autoComplete.single" )
+    .autocomplete({
+      minLength: 1,
+      select: function( event, ui ) {
+        this.value = ui.item.value;
+        $(this).trigger('autosize.resize');
+      }
+    });
+
     $( ".autoComplete.multiple" )
       .bind( "keydown", function( event ) {
         if ( event.keyCode === $.ui.keyCode.TAB &&
@@ -151,7 +197,8 @@ $( function() {
           terms.push( ui.item.value );
           // add placeholder to get the comma-and-space at the end
           terms.push( "" );
-          this.value = terms.join( ", " );
+          this.value = terms.join( "\n" );
+          $(this).trigger('autosize.resize');
           return false;
         }
       });
@@ -173,23 +220,43 @@ $( function() {
       var data_label = $( this ).attr( 'data-label' );
       $( this )
         .autocomplete({
-          minLength: 1,
           source: pageData['Auto_Data'][data_label]
         });
     });
     
     $.each( $( "textarea[data-label='DARPA Program Name'],\
-    textarea[data-label='DARPA Program']" ), function() {
+    textarea[data-label='DARPA Program']" ), function( event, ui ) {
       $( this )
         .autocomplete({
-          minLength: 1,
           source: pageData['Program_Names']
         });
     });
-    
+
     $( '.sortable' ).sortable();
     $( '.sortable' ).disableSelection();
     $( '#tabs' ).tabs();
     $( 'textarea' ).autosize();  
+    
+    
+    $( '.append' ).click( function () {
+      var schemaCopy = {};
+      var schemaType = $( this ).attr('schema');
+      var selector = 'textarea' + '.' + schemaType;
+      schemaCopy = schemaObject[schemaType];
+      $( selector ).each( function() {
+        var dataLabel = $( this ).attr( 'data-label' );
+        var multiple;
+        var attribute = $( this ).val();
+
+        if ( $( this ).hasClass('multiple') ) {
+          multiple = true;
+        }
+        else {
+          multiple = false;
+        }
+        attribute = validate(multiple, attribute);
+        schemaCopy[dataLabel] = attribute;
+      });   
+    });
   }
 });

@@ -1,47 +1,155 @@
 var schemaList = {};
+var required = {};
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires="+d.toGMTString();
+  document.cookie = cname + "=" + cvalue + "; " + expires +
+  "; path=/";
+}
+
+function getCookie(cname) {
+  var name = cname + "=";
+  var ca = document.cookie.split(';');
+  for(var i=0; i<ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0)==' ') c = c.substring(1);
+    if (c.indexOf(name) != -1) return c.substring(name.length,c.length);
+  }
+    return "";
+}
+
 $( function() {
-  var autoComplete = {};
-  autoComplete['autoFields'] = ['Program Teams', 'Categories', 'Subcategories',
-  'Display Software Columns', 'Display Pubs Columns', 'Long Name', 'DARPA Office'];
-  var json_post = JSON.stringify(autoComplete);
-  $.post("/wsgi-scripts/auto_data.py", json_post, function( data ) {
-    console.log( data );
-    createPage( data );
-    });
-
-  $( "#submitTxt" ).hide();
-  
-  function validate( multiple, attribute ) {
-    var validAttr = attribute.trim();
-
-    if (validAttr == "") 
-      return validAttr;
-
-    if ( multiple ) {
-      var valueList = validAttr.split(/\r\n|\n|\r/);     
-      for( var i = 0; i < valueList.length; i++ ) {
-        var value = valueList[i];
-        if (value == "") {
-          validAttr = "Error: List contains an empty/non-existant value.";
-          break;
+  $( "#nameMenu" ).hide();
+  if( getCookie( "lname" ) == '') {
+    $( "#nameMenu" ).dialog({
+      resizable: false,
+      modal: true,
+      width: 390,
+      height: 220,
+      buttons: {
+      "Enter": function() {
+        var fname = $( '#fname' ).val();
+        var lname = $( '#lname' ).val();
+        if (fname == '' || lname == '') {
+          alert('Please supply a first and last name.')
         }
-        valueList[i] = value.trim();
-      }   
-      validAttr = valueList; 
-    }
+        else {
+          var pattern = /^[a-zA-Z'-]+$/;
+          if( pattern.test(lname) && pattern.test(fname) ) {
+            setCookie('lname', lname, 30);
+            setCookie('fname', fname, 30);
+            $( this ).dialog( "close" );
+            location.reload();
+          }
+          else {
+            alert("Only use A-Z or a-z or ' or - in the names");
+          }    
+        }
+      }
 
-    return validAttr
+      }
+    });  
+  } 
+  
+  $( "#error" ).hide();
+  $( "#submitTxt" ).hide();
+  $( "#addMenu" ).hide();
+
+  var user = {};
+  user['First'] = getCookie('fname');
+  user['Last'] = getCookie('lname');
+  var json_post = JSON.stringify(user);
+
+  if (user['First'] != ''){
+    $.ajax({
+      type:'POST',
+      url:'/wsgi-scripts/auto_data.py',
+      data:json_post,
+      success: function( data ) {
+        console.log( data );
+        createPage( data );
+      }
+    });
+  }
+
+  function clearTab(schemaType){
+    var selector = 'textarea.' + schemaType;
+    
+    $( selector ).each( function () {
+      $(this).val('');
+    });
+    
+    selector = 'input.' + schemaType +
+    '[type="checkbox"]';
+    $( selector ).each( function() {
+      this.checked = true;
+    });
+  }
+
+  function addButtonMenu( schemaCopy ) {
+    var jsonText = JSON.stringify(schemaCopy, undefined, 2);
+    $( '#addMenuText' ).html(jsonText);
+  }
+
+  function scrollTo( elementID ) {
+    var selector = "#" + elementID;
+    $('html, body').animate({
+      scrollTop: $(selector).offset().top
+    }, 500);
+  }
+
+  function validate( multiple, attribute, location, type) {
+    try {
+      var validAttr = attribute.trim();
+      if (validAttr == "") {
+        if ( required[type].indexOf(location) > -1 ) {
+          throw "This field is required.";
+        }
+
+        if ( multiple ) {
+            validAttr = [''];
+        }
+        return validAttr;
+      }
+
+      if ( multiple ) {
+        var valueList = validAttr.split(/\r\n|\n|\r/);
+        var finalList = [];     
+        for( var i = 0; i < valueList.length; i++ ) {
+          var value = valueList[i];
+          value = value.trim();
+        
+          // Ignores blank values in a list
+          if (value != "") {
+            finalList.push(value); 
+          }    
+  
+        }  
+        validAttr = finalList; 
+      }
+    }   
+    catch(err) {
+      addError( err, location );
+      $( '#error').show();
+      scrollTo('error');
+      return false;
+    }
+     
+    return validAttr;
   }
 
   function blankSchema( schema ) {
+    var schemaCopy = {};
     for (var attribute in schema) {
       if( schema[attribute] instanceof Array ) {
-        schema[attribute] = [];
+        schemaCopy[attribute] = [];
       }
       else {
-        schema[attribute] = "";
+        schemaCopy[attribute] = "";
       }
     }
+    return schemaCopy
   }
 
   function split( val ) {
@@ -50,6 +158,12 @@ $( function() {
 
   function extractLast( term ) {
     return split( term ).pop();
+  }
+    
+  function addError( error, location ) {
+    var errorText = '<li>Error in "' + location +
+    '": ' + error + '</li>';
+    $( '#errorList' ).append( errorText );
   }
   
   function addCheckBoxes ( checkBoxes, schemaType, dataLabel ) {
@@ -64,12 +178,27 @@ $( function() {
 
     return html;
   }
+  function addMenu ( type, menuText ) {
+    var name;
+    var desc;
+    var example;
+    var html;
+    for( var i=0; i<menuText.length; i++ ){
+      name = menuText[i]['Name'];
+      desc = menuText[i]['Description'];
+      example = menuText[i]['Example'];
+      html = '<div title="Help" class="help" data-class="' + type + '" data-label="' + name +
+      '"><p><b>Name:</b> ' + name + '<br><br><b>Description:</b> ' + desc +
+      '<br><br><b>Example:</b> ' + example + '<br><br>' + 
+      'To enter multiple values, press the Enter key.</p></div>';
+      $( 'body' ).append(html);
+    }
 
-  function createTable ( schema, schemaType, pubColumns, softwareColumns) {
+  }
+  function createTable ( schema, schemaType, pubColumns, softwareColumns, autoData) {
     var id = schemaType + "t";
     var table = '<table id="' + id +
-    '"><tr><th>Name</th><th>Value</th>' +
-    '</tr>';
+    '"><tr><th>Name</th><th>Value</th></tr>';
     var tabSelector = "#" + schemaType;
 
     for (var key in schema) {
@@ -97,7 +226,7 @@ $( function() {
           tableRow += 'single';
         }
         tableRow += " " + schemaType;
-        if ( autoComplete['autoFields'].indexOf(key) >= 0 ){
+        if ( autoData.indexOf(key) >= 0 ){
           tableRow +=' autoComplete"';
         }
         else{
@@ -107,8 +236,8 @@ $( function() {
         '">' + '</textarea>';
       }
       
-      tableRow += '</td><td><button class="helpBtn ' +
-      schemaType + 'b">Help</button>' + '</td></tr>';
+      tableRow += '</td><td><button class="helpBtn notLast" data-label="' + key 
+      + '" data-class="'+ schemaType + '">Help</button>' + '</td></tr>';
       table += tableRow;
     }
 
@@ -128,6 +257,21 @@ $( function() {
       text: false
      });
 
+    $( ".help" ).dialog({
+      autoOpen: false,
+      modal: true,
+      height: 500,
+      width: 500 
+    });
+
+    $( ".notLast" ).click( function() {
+      var type = $( this ).attr("data-class");
+      var label = $( this ).attr("data-label");
+      var selector = '.help[data-label="' + label + '"]' +
+      '[data-class="' + type + '"]';
+      $( selector ).dialog();
+    });
+
     $( ".append" ).button({
       icons: {
         primary: "ui-icon-plusthick"
@@ -139,7 +283,7 @@ $( function() {
         primary: "ui-icon-play"
         }
      });
-
+    
     $( ".lastHelp" ).click( function() {
       $( "#submitTxt" ).dialog();
     });
@@ -152,19 +296,36 @@ $( function() {
     var schemas = pageData['Schemas'];
     var pubsColumns = pageData['Auto_Data']['Display Pubs Columns'];
     var softwareColumns = pageData['Auto_Data']['Display Software Columns'];
+    var autoData = [];
+
+    for( var key in pageData['Auto_Data'] ) {
+      autoData.push(key);
+    }
+
+    for( var i = 0; i < pageData['Required'].length; i++ ) {
+        for( var key in pageData['Required'][i]) {
+          required[key] = pageData['Required'][i][key];
+          break;
+        }
+    }
 
     for ( var i = 0; i < schemas.length; i++ ) {
       var schemaType = schemas[i]['Type'];
       var schemaCopy = schemas[i]['Schema'][0];
+      schemaList[schemaType] = [];
       var html = '<li><a href="#' + schemaType + '">' +
       schemaType + '</a></li>';
 
       $( '#schemaLinks' ).append( html );
       html = '<div id="' + schemaType + '">' + '</div>';
       $( '#tabs' ).append(html);
-      blankSchema( schemaCopy );
-      schemaObject[schemaType] = schemaCopy;
-      createTable( schemaCopy, schemaType, pubsColumns, softwareColumns );
+      schemaObject[schemaType] = blankSchema(schemaCopy);
+      createTable( schemaCopy, schemaType, pubsColumns, softwareColumns, autoData );
+    }
+
+    for( var i = 0; i < pageData['Help_Menu'].length; i++) {
+      var currentMenu = pageData['Help_Menu'][i]
+      addMenu(currentMenu['Schema'], currentMenu['Menu'])
     }
 
     $( ".autoComplete.single" )
@@ -237,26 +398,86 @@ $( function() {
     $( '#tabs' ).tabs();
     $( 'textarea' ).autosize();  
     
-    
+    $( '.submit' ).click( function () {
+      $( "#submitMenu" ).dialog({
+          resizable: false,
+          modal: true,
+          width: 300,
+          height: 200,
+          buttons: {
+            "Confirm": function() {
+              $( this ).dialog( "close" );
+            },
+            Cancel: function() {
+              $( this ).dialog( "close" );
+            }
+          }
+      });
+
+    });
     $( '.append' ).click( function () {
-      var schemaCopy = {};
       var schemaType = $( this ).attr('schema');
       var selector = 'textarea' + '.' + schemaType;
-      schemaCopy = schemaObject[schemaType];
+      var schemaCopy = blankSchema(schemaObject[schemaType]);
+      var badData = false;
+      $( '#errorList').empty();
       $( selector ).each( function() {
         var dataLabel = $( this ).attr( 'data-label' );
         var multiple;
-        var attribute = $( this ).val();
-
+        $(this).val( function(i, v) {
+          return v.replace(/</g,'&lt').replace(/>/g,'&gt');
+        });
+        var attribute = $(this).val();
         if ( $( this ).hasClass('multiple') ) {
           multiple = true;
         }
         else {
           multiple = false;
         }
-        attribute = validate(multiple, attribute);
-        schemaCopy[dataLabel] = attribute;
-      });   
+
+        attribute = validate(multiple, attribute, dataLabel, schemaType);
+        if( attribute !== false ) {
+          schemaCopy[dataLabel] = attribute;  
+        }
+        else {
+          badData = true;
+        }
+      }); 
+  
+      if( !badData ) {
+        var selector = '#error';
+        $( '#errorList').empty();
+        $( ':checked.' + schemaType ).each( function() {
+          var dataLabel = $(this).attr('name');
+          schemaCopy[dataLabel].push($(this).val());
+        });
+
+        if( $( selector ).is(":visible") ) {
+          $( selector ).hide();
+        }
+        
+        addButtonMenu(schemaCopy);
+        $( "#addMenu" ).dialog({
+          resizable: false,
+          modal: true,
+          width: 1000,
+          height: 500,
+          buttons: {
+            "Confirm": function() {
+              $( this ).dialog( "close" );
+              schemaList[schemaType].push(schemaCopy);
+              clearTab(schemaType);
+            },
+            Cancel: function() {
+              $( this ).dialog( "close" );
+            }
+          }
+      });
+
+        
+      }         
     });
+
   }
+
 });

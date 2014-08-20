@@ -6,15 +6,20 @@ import cgi
 import json
 import sys
 import glob
+import os
+import subprocess, shlex
 from collections import OrderedDict
 
-home_dir = "/home/jtobat/"
-data_dir = home_dir+"test/open-catalog-generator/"
-program_path = data_dir + "active_content.json"
-script_path = data_dir + "scripts"
-catalog = data_dir + "darpa_open_catalog"
-schemas_path = catalog + "/00-schema-examples.json"
-sys.path.insert(0, script_path)
+# These paths will need to change depending on server paths
+home_dir = "/home/jtobat/" # Home directory
+data_dir = home_dir+"test/open-catalog-generator/" # Open Catalog Generator Location
+wsgi_dir = home_dir+"wsgi/"
+program_path = data_dir + "active_content.json" # Location of active program names
+script_path = data_dir + "scripts" # Location of scripts
+catalog = data_dir + "darpa_open_catalog" # Open Catalog Location
+schemas_path = catalog + "/00-schema-examples.json" # Schema Template File
+config_file = wsgi_dir + "config.json" # Configuration File
+help_file = wsgi_dir + "help.json" # Help Menu File
 
 def findTerms(json_record, field_list, term_list):
   for field in field_list:
@@ -29,6 +34,7 @@ def findTerms(json_record, field_list, term_list):
             term_list[field].append(term)
   return term_list
 
+# Return array of DARPA program names
 def getProgramNames (path):
   nameList = []
   json_content = openJSON(path)
@@ -87,16 +93,35 @@ def openJSON(file_path):
 
   return json_content
 
+def restrictSchemas( schemaList, userList, user ):
+   if user in userList:
+     return schemaList
+   else:
+     for i in xrange(len(schemaList)):
+       if schemaList[i]['Type'] == "Program":
+         schemaList.pop(i)
+         break
+
+   return schemaList
+
 def application(environ, start_response):
+   command = "cd %s" % wsgi_dir
+   command += "; ./update_catalog %s" % data_dir
+   subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE, shell=True)
    server_response = {}
    request_body = environ['wsgi.input'].read()
-   fieldList = json.loads(request_body)
+   user = json.loads(request_body)
+   config = openJSON(config_file);
+   help_menu = openJSON(help_file);
+   name = "%s %s" % (user['First'], user['Last'])
    status = '200 OK'
    response_headers = [('Content-type', 'application/json')]
    start_response(status, response_headers)
-   server_response['Schemas'] = openJSON(schemas_path)
+   server_response['Schemas'] = restrictSchemas(openJSON(schemas_path), config['Program Managers'], name)
    server_response['Program_Names'] = getProgramNames(program_path)
-   server_response['Auto_Data'] = retrieveFieldNames(fieldList['autoFields'], server_response['Schemas'])
+   server_response['Auto_Data'] = retrieveFieldNames(config['Autocomplete'], server_response['Schemas'])
+   server_response['Help_Menu'] = help_menu
+   server_response['Required'] = config['Required']
    json_response = json.dumps(server_response)
 
    return [json_response]

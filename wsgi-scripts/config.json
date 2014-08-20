@@ -1,0 +1,35 @@
+{
+    "Program Managers":[
+        "Tonya  Cannariato",
+        "Eric Whyne"
+    ],
+    "Autocomplete":[
+        "Program Teams",
+        "Long Name",
+        "Display Pubs Columns",
+        "Display Software Columns",
+        "Categories",
+        "Subcategories",
+        "License",
+        "Languages"
+    ],
+    "Required":[
+        {
+            "Program":[
+                "DARPA Program Name"
+            ]
+        },
+        {
+            "Software":[
+                "DARPA Program",
+                "Software"
+            ]
+        },
+        {
+            "Publication":[
+                "DARPA Program",
+                "Title"
+            ]
+        }
+    ]
+}

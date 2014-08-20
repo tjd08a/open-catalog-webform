@@ -1,0 +1,202 @@
+[
+    {
+        "Schema": "Program",
+        "Menu":[
+            {
+                "Name":"DARPA Program Name",
+                "Description":"The name of the DARPA program funding your project.",
+                "Example":"XDATA"
+            },
+            {
+                "Name":"Long Name",
+                "Description":"If your Program Name is an abbreviation, include the full name of the program.",
+                "Example":"Crowd Sourced Formal Verification (CSFV)"
+            },
+            {
+                "Name":"Program Teams",
+                "Description":"The names of the performer teams participating in your project.",
+                "Example":"Giant Oak, Inc."
+            },
+            {
+                "Name":"Link",
+                "Description":"The link to your program’s web page on darpa.mil.",
+                "Example":"http://www.darpa.mil/Our_Work/I2O/Programs/XDATA.aspx"
+            },  
+            {
+                "Name":"Display Software Columns",
+                "Description":"These are the titles of all of the columns that will be publicly displayed on your program’s software page. They correspond to the fields of meta data requested about each software component. Arrange the checkboxes in the order in which you want them displayed, and uncheck any boxes that you do not want displayed on your page.",
+                "Example":"Team, Project, Description, Instructional Material, Category, Code, Stats, License"
+            },
+            {
+                "Name":"Display Pubs Columns",
+                "Description":"These are the titles of all of the columns that will be publicly displayed on your program’s publication page. They correspond to the fields of meta data requested about each publication component. Arrange the checkboxes in the order in which you want them displayed, and uncheck any boxes that you do not want displayed on your page.",
+                "Example":"Team, Title, Link"
+            },
+            {
+                "Name":"Description",
+                "Description":"Describe the purpose and goals of your program. This description must be vetted and approved through DARPA Public Affairs.",
+                "Example":"XDATA is developing an open source software library for big data to help overcome the challenges of effectively scaling to modern data volume and characteristics. The program is developing the tools and techniques to process and analyze large sets of imperfect, incomplete data. Its programs and publications focus on the areas of analytics, visualization, and infrastructure to efficiently fuse, analyze and disseminate these large volumes of data."
+            },
+            {
+                "Name":"Program Manager Link",
+                "Description":"A link to the program manager’s biography page on darpa.mil.",
+                "Example":"http://www.darpa.mil/Our_Work/I2O/Personnel/Dr_Christopher_White.aspx"
+            },
+            {
+                "Name":"Program Manager",
+                "Description":"The program manager's name.",
+                "Example":"Dr. Christopher White"
+            },
+            {
+                "Name":"Program Manager Email",
+                "Description":"The program manager's email address.",
+                "Example":"christopher.white@darpa.mil"
+            },    
+            {
+                "Name":"Image",
+                "Description":" If you would like to include an image for your program, include its file name (online location) here. You will also need to submit the image itself along with the rest of your materials. If you choose not to include an image, please enter Not Available.",
+                "Example":"XDATA-image.png"
+            }
+        ]    
+    },
+    {
+        "Schema": "Software",
+        "Menu":[
+            {
+                "Name":"DARPA Program Name",
+                "Description":"The name of the DARPA program for which the software was developed.",
+                "Example":"XDATA"
+            },
+            {
+                "Name":"Software",
+                "Description":"The name of the software itself.",
+                "Example":"Tangelo"
+            },
+            {
+                "Name":"Program Teams",
+                "Description":"The names of all of the teams that worked on the software.",
+                "Example":"Giant Oak, Inc."
+            },
+            {
+                "Name":"Contributors",
+                "Description":"The names of additional parties contributing to the advancement of the code repo. If there are none, please enter 'Not Available'.",
+                "Example":"University of Southern California"
+            },
+            {
+                "Name":"Sub-contractors",
+                "Description":"The names of contractors hired by the Program Teams. If there are none, please enter 'Not Available'.",
+                "Example":"Giant Oak, Inc."
+            },
+            {
+                "Name":"Internal Link",
+                "Description":"A link to the software for internal use, which will not be shared publicly. If the software has no site for internal use, enter Not Available.",
+                "Example":"https://xd-wiki.xdata.data-tactics-corp.com:8443/display/VIS/Visual+Design+Environment-Kitware+Home"
+            },  
+            {
+                "Name":"External Link",
+                "Description":"A link to your software’s website. This will be publicly visible. If your software has no public website, please enter Not Available.",
+                "Example":"http://kitware.github.io/tangelo/"
+            }, 
+            {
+                "Name":"License",
+                "Description":"The licensing regime for your software.",
+                "Example":"ALv2"
+            },
+            {
+                "Name":"Platform Requirements",
+                "Description":"List any requirements the software may have for server settings or setup. If there are none, enter 'Not Available'.",
+                "Example":"Linux Redhat"
+            },
+            {
+                "Name":"Dependent Modules",
+                "Description":"If the software has any additional optional components that can extend or expand the software, list their names here. If there are none, enter 'Not Available'.",
+                "Example":"Tangelo Mapping Extension"
+            },
+            {
+                "Name":"Dependent Module URLs",
+                "Description":"List the URLs of the Dependent Modules' public code repositories (if applicable). If there are none, enter 'Not Available'.",
+                "Example":"https://github.com/Kitware/tangelomappingextension.git"
+            },
+            {
+                "Name":"Component Modules",
+                "Description":"If the software requires any additional components in order to run, list them here. If there are none, enter 'Not Available'.",
+                "Example":"Ozone Widget Framework"
+            },
+            {
+                "Name":"Component Module URLs",
+                "Description":"List the URLs of the Component Modules' public code repositories (if applicable). If there are none, enter 'Not Available'.",
+                "Example":"https://github.com/ozoneplatform/owf.git"
+            },
+            {
+                "Name":"Industry",
+                "Description":"If your software is targeted at one specific industry, include that industry here. If there are none, enter 'Not Available'.",
+                "Example":"Medicine"
+            },
+            {
+                "Name":"Functionality",
+                "Description":"This field allows visitors unfamiliar with the Catalog to search for software based on keywords related to what the software does.",
+                "Example":"Dynamic Web Applications"
+            },
+            {
+                "Name":"Public Code Repo",
+                "Description":"If your code is publicly available on the Internet, put the link to the code here. This link will not be clickable, as it may be necessary to open it outside of a browser environment in order to view the code repo itself. If your code is not publicly available, enter 'Not Yet Available'. If your software will be publicly available in the future, please place the anticipated future date in this field; preferably in ISO 8601 format (i.e. 2016-02-29 or 2016-02).",
+                "Example":"https://github.com/Kitware/tangelo.git"
+            }, 
+            {
+                "Name":"Categories",
+                "Description":"The category (or categories) that this particular piece of software fits into to differentiate it from other pieces of software in the same DARPA program. Categories are likely to be domain specific to your DARPA program. XDATA has three: Analytics, Visualization, and Infrastructure. Categories should be internally consistent, so look at those already in use to consider normalization of this data point.",
+                "Example":"Visualization"
+            },
+            {
+                "Name":"Description",
+                "Description":"Describe what the software is, what it does, and why it’s useful. A non-expert should be able to understand this.",
+                "Example":"Tangelo provides a flexible HTML5 web server architecture that cleanly separates your web applications (pure JavaScript, HTML, and CSS) and web services (pure Python). This software is bundled with some great tools to get you started. (JavaScript/Python)"
+            }         
+        ]    
+    },
+    {
+        "Schema": "Publication",
+        "Menu":[
+            {
+                "Name":"DARPA Program Name",
+                "Description":"The name of the DARPA program for which the publication was written.",
+                "Example":"XDATA"
+            },
+            {
+                "Name":"Authors",
+                "Description":"The names of the publication’s authors in First Name Middle Initial Last Name order.",
+                "Example":"Joseph A. Cottam"
+            },
+            {
+                "Name":"Program Teams",
+                "Description":"The names of all of the teams that worked on the software.",
+                "Example":"Giant Oak, Inc."
+            },
+            {
+                "Name":"Link",
+                "Description":"A publicly available link to the publication. Ideally, this should be a link directly to the file itself (if available). If the publication has not been published yet, please enter: Not Yet Published",
+                "Example":"http://www.crest.iu.edu/publications/prints/2013/Cottam2013AR.pdf"
+            },  
+            {
+                "Name":"Title",
+                "Description":"The publication’s title, in standard US English title capitalization format.",
+                "Example":"Overplotting: Unified Solutions under Abstract Rendering"
+            }, 
+            {
+                "Name":"Categories",
+                "Description":"Selected based on the latest classification tree by ACM: http://www.acm.org/about/class/class/2012.",
+                "Example":"Software Architectures"
+            },
+            {
+                "Name":"Subcategories",
+                "Description":"If the categories given need to be broken down further, do so by specifying subcategories here, following the same principles listed for Categories. If not, please enter 'Not Available'.",
+                "Example":"Data Abstraction"
+            },
+            {
+                "Name":"ACM 1998 classification code",
+                "Description":"The appropriate ACM classification code(s) for the publication.",
+                "Example":"D.2.11"
+            }
+        ]    
+    }      
+]

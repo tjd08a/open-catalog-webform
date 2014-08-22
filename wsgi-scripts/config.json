@@ -31,5 +31,23 @@
                 "Title"
             ]
         }
-    ]
+    ],	
+    "Storage":
+        {
+            "Program":
+                {
+                    "Alias":"",
+                    "Key":"DARPA Program Name"
+                },
+            "Publication":
+                {
+                    "Alias":"pubs",
+                    "Key":"DARPA Program"
+                },
+            "Software":
+                {
+                    "Alias":"",
+                    "Key":"DARPA Program"
+                }
+        }
 }

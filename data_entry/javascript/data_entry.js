@@ -1,5 +1,8 @@
-var schemaList = {};
-var required = {};
+var schemaList = {}; // List of schema entries
+var required = {}; // 
+
+// Sets a document cookie. Uses the given name, value, and
+// will set it to expire in the number of days given.
 function setCookie(cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -8,6 +11,8 @@ function setCookie(cname, cvalue, exdays) {
   "; path=/";
 }
 
+// Gets the current value of a cookie with the given name.
+// Returns "" if no value has been set for it.
 function getCookie(cname) {
   var name = cname + "=";
   var ca = document.cookie.split(';');
@@ -19,8 +24,11 @@ function getCookie(cname) {
     return "";
 }
 
+// Runs the code below once the document loads.
 $( function() {
   $( "#nameMenu" ).hide();
+  // Checks to see if a name has been set, and if not, 
+  // 
   if( getCookie( "lname" ) == '') {
     $( "#nameMenu" ).dialog({
       resizable: false,
@@ -52,10 +60,14 @@ $( function() {
     });  
   } 
   
-  $( "#error" ).hide();
+  // The html div sections below are meant to be hidden
+  $( "#error" ).hide(); // This div only appears after a validation error occurs
+  // The button hides menu text, this is not meant to appear on the main page
   $( "#submitTxt" ).hide();
   $( "#addMenu" ).hide();
 
+  // Gets the set name of the user, will only send a request to the server
+  // for page information if both the first and last name have been set.
   var user = {};
   user['First'] = getCookie('fname');
   user['Last'] = getCookie('lname');
@@ -67,7 +79,6 @@ $( function() {
       url:'/wsgi-scripts/auto_data.py',
       data:json_post,
       success: function( data ) {
-        console.log( data );
         createPage( data );
       }
     });
@@ -139,6 +150,9 @@ $( function() {
     return validAttr;
   }
 
+  // Returns a JSON schema with blank values. 
+  // This means Array values will be turned into
+  // empty arrays and 
   function blankSchema( schema ) {
     var schemaCopy = {};
     for (var attribute in schema) {
@@ -152,20 +166,33 @@ $( function() {
     return schemaCopy
   }
 
+  // Splits a given text value using
+  // newline and space terms.
   function split( val ) {
     return val.split( /\n\s*/ );
   }
-
+  
+  // Extracts the last term from a text
+  // value that was split using the above function
   function extractLast( term ) {
     return split( term ).pop();
   }
     
+  // Adds error text to the special div
+  // on the page. The error input is the
+  // text that describes the error. The location
+  // is the field/row (e.g. Program Teams) where 
+  // the error occured.
   function addError( error, location ) {
     var errorText = '<li>Error in "' + location +
     '": ' + error + '</li>';
     $( '#errorList' ).append( errorText );
   }
   
+  // Adds checkbox html elements for a list of checkbox values.
+  // The schemaType is the class that it will be assigned. 
+  // The dataLabel is the name of the group that the checkboxes
+  // belong to.
   function addCheckBoxes ( checkBoxes, schemaType, dataLabel ) {
     var html = "";
     for ( var i = 0; i < checkBoxes.length; i++ ) {
@@ -178,6 +205,7 @@ $( function() {
 
     return html;
   }
+
   function addMenu ( type, menuText ) {
     var name;
     var desc;
@@ -195,6 +223,7 @@ $( function() {
     }
 
   }
+
   function createTable ( schema, schemaType, pubColumns, softwareColumns, autoData) {
     var id = schemaType + "t";
     var table = '<table id="' + id +
@@ -325,7 +354,19 @@ $( function() {
 
     for( var i = 0; i < pageData['Help_Menu'].length; i++) {
       var currentMenu = pageData['Help_Menu'][i]
-      addMenu(currentMenu['Schema'], currentMenu['Menu'])
+      if(currentMenu['Schema'] == "All") {
+        var menu = {};
+        menu = currentMenu['Menu'];
+        var desc = menu['Description'];
+        var name = menu['Name'];
+        var html = '<div id="submitTxt" title="Help" class="help">' + 
+        '<p><b>Name:</b> ' + name + '<br><br><b>Description:</b> ' + 
+        desc + '</p></div>';
+        $( 'body' ).append(html);
+      }
+      else {
+        addMenu(currentMenu['Schema'], currentMenu['Menu']);
+      }
     }
 
     $( ".autoComplete.single" )

@@ -1,5 +1,14 @@
 [
     {
+        "Schema": "All",
+        "Menu":
+            {
+                "Name":"Add and Submit",
+                "Description":"Press the Add button to add your entry to the list of entries that will be sent to the server, a validation will also be performed on all the data present in your entry. Pressing the Submit button will send all of your entries to the server, and an alert menu will appear if your submission was sent, and was successful. In summary, you must press Add button and then the Submit button for your entries to be processed by the server."
+            }
+     
+    },
+    {
         "Schema": "Program",
         "Menu":[
             {

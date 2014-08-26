@@ -3,6 +3,13 @@
   .single {
    height: 50px;
   }
+  .help {
+   display: none;
+  }
+
+  #submitMenu {
+   display: none;
+  }
   .checkBox {
    height: 70px;
    border: 1px solid;
@@ -33,14 +40,25 @@
     </ul>
   </div>
   <body>
-  <div id="submitTxt" title="Help Menu">
-    <b>Add:</b> Add this entry to the current list of records.<br><br>
-    <b>Submit:</b> Send all entries to be stored in a file.
-    You will no longer be able to add new entries after submitting.
-  </div>
+    <div id="nameMenu" title="Please enter you first and last name.">
+      First Name: <input type="text" id="fname"></input><br>
+      Last Name: <input type="text" id="lname"></input>
+    </div>
+    <div id="addMenu" title="Is this entry correct?">
+      <pre id="addMenuText"></pre>
+    </div>
+    <div id="submitMenu" title="Submit">Are you sure you wish to submit?</div>
+    <div class="ui-widget">
+      <div id="error" class="ui-state-error ui-corner-all">
+        <p>
+        <span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+        <ul id="errorList"></ul>
+        </p>
+      </div>
+    </div>
   </body>
+
   <link rel='stylesheet' href='javascript/style/header_footer.css' type='text/css'/> 
-  
   <footer>
     <div class='footer-style'>
       <hr>  

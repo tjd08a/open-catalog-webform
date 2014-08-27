@@ -28,7 +28,9 @@ function getCookie(cname) {
 $( function() {
   $( "#nameMenu" ).hide();
   // Checks to see if a name has been set, and if not, 
-  // 
+  // creates a dialog that will obtain the user's
+  // first and last name. This will be tested to 
+  // ensure that they are in fact names.
   if( getCookie( "lname" ) == '') {
     $( "#nameMenu" ).dialog({
       resizable: false,
@@ -43,6 +45,8 @@ $( function() {
           alert('Please supply a first and last name.')
         }
         else {
+          // Tests to see if both the last and first
+          // name are actual names (A-Z or ' or - present)
           var pattern = /^[a-zA-Z'-]+$/;
           if( pattern.test(lname) && pattern.test(fname) ) {
             setCookie('lname', lname, 30);
@@ -72,37 +76,55 @@ $( function() {
   user['First'] = getCookie('fname');
   user['Last'] = getCookie('lname');
   var json_post = JSON.stringify(user);
-
+  
+  // Will only request information from the server
+  // if the user has entered a non-blank name.
   if (user['First'] != ''){
     $.ajax({
       type:'POST',
       url:'/wsgi-scripts/auto_data.py',
       data:json_post,
+      // Creates the web page if and only 
+      // if data has been recieved from
+      // the server successfully.
       success: function( data ) {
         createPage( data );
       }
     });
   }
 
+  // Clears the values of a tab on the page.
+  // Will essentially clear every textarea and
+  // will reset any group of checkboxes by checking
+  // all of them.
   function clearTab(schemaType){
     var selector = 'textarea.' + schemaType;
-    
+    // Clears the textareas
     $( selector ).each( function () {
       $(this).val('');
     });
     
     selector = 'input.' + schemaType +
     '[type="checkbox"]';
+    // Resets groups of checkboxes by checking
+    // all the values in the group.
     $( selector ).each( function() {
       this.checked = true;
     });
   }
 
+  // Takes the values entered on the form/tab, converts
+  // it into a JSON format. This is done so a text preview
+  // of the entry can be shown before it is stored on the
+  // server. The JSON preview will be shown when the Add
+  // button is pressed.
   function addButtonMenu( schemaCopy ) {
     var jsonText = JSON.stringify(schemaCopy, undefined, 2);
     $( '#addMenuText' ).html(jsonText);
   }
 
+  // Scrolls to an element with the given ID,
+  // doing so using an animation.
   function scrollTo( elementID ) {
     var selector = "#" + elementID;
     $('html, body').animate({
@@ -114,7 +136,7 @@ $( function() {
     try {
       var validAttr = attribute.trim();
       if (validAttr == "") {
-        if ( required[type].indexOf(location) > -1 ) {
+        if ( type in required && required[type].indexOf(location) > -1 ) {
           throw "This field is required.";
         }
 
@@ -122,6 +144,13 @@ $( function() {
             validAttr = [''];
         }
         return validAttr;
+      }
+
+      if ( location == "New Date" || location == "Update Date" ) {
+        var pattern = /^[0-9]{4}[0-1][0-9][0-3][0-9]$/;
+        if ( !pattern.test(validAttr) ) {
+          throw "Not a valid date format, use yyyymmdd."
+        }
       }
 
       if ( multiple ) {
@@ -156,6 +185,9 @@ $( function() {
   function blankSchema( schema ) {
     var schemaCopy = {};
     for (var attribute in schema) {
+      // Schema attributes with a list
+      // i.e. expects multiple inputs, will
+      // have its value replaced by an empty array.
       if( schema[attribute] instanceof Array ) {
         schemaCopy[attribute] = [];
       }
@@ -440,6 +472,11 @@ $( function() {
     $( 'textarea' ).autosize();  
     
     $( '.submit' ).click( function () {
+      var serverSubmit = {};
+      serverSubmit['Entries'] = schemaList;
+      serverSubmit['User'] = getCookie('fname') + '_' + getCookie('lname');
+      var submission = JSON.stringify(serverSubmit);
+      submission = submission.replace(/&lt/g,'<').replace(/&gt/g,'>');
       $( "#submitMenu" ).dialog({
           resizable: false,
           modal: true,
@@ -448,6 +485,14 @@ $( function() {
           buttons: {
             "Confirm": function() {
               $( this ).dialog( "close" );
+              $.ajax({
+                type:'POST',
+                url:'/wsgi-scripts/store_json.py',
+                data:submission,
+                success: function( data ) {
+                  alert("Submit was successful.");
+                }
+              });
             },
             Cancel: function() {
               $( this ).dialog( "close" );
@@ -456,6 +501,7 @@ $( function() {
       });
 
     });
+
     $( '.append' ).click( function () {
       var schemaType = $( this ).attr('schema');
       var selector = 'textarea' + '.' + schemaType;

@@ -40,14 +40,18 @@
     </ul>
   </div>
   <body>
+    <!-- Menu for asking for cookies, first name and last name -->
     <div id="nameMenu" title="Please enter you first and last name.">
       First Name: <input type="text" id="fname"></input><br>
       Last Name: <input type="text" id="lname"></input>
     </div>
+    <!-- Add menu text, pre tag preserves format of text. Title is what displays at top of menu. -->
     <div id="addMenu" title="Is this entry correct?">
       <pre id="addMenuText"></pre>
     </div>
+    <!-- Submit menu text, change what's inside the brackets to change the text. -->
     <div id="submitMenu" title="Submit">Are you sure you wish to submit?</div>
+    <!-- Location to display errors, the errorList contains a list of all errors found in form. -->
     <div class="ui-widget">
       <div id="error" class="ui-state-error ui-corner-all">
         <p>

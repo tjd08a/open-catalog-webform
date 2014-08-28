@@ -132,33 +132,62 @@ $( function() {
     }, 500);
   }
 
+  // Validates a form grabbed from a textarea on the page.
+  // Multiple is true or false, this indicates that the
+  // value expects multiple inputs or not.
+  // Attribute is the value from the page, this particular
+  // page only validates textareas as that is the only
+  // input type it contains.
+  // Location is the name of the field on the form or tab that
+  // is being evaluated.
+  // Type is the schema or tab name which is being evaluated.
+  // Both the location and type are collected for validation
+  // and error reporting purposes.
   function validate( multiple, attribute, location, type) {
     try {
-      var validAttr = attribute.trim();
+      var validAttr = attribute.trim(); // Removes unnecessary whitespace
+
+      // If the input is blank, checks to see if the field requires an
+      // input and if it doesn't, returns an empty string or array depending
+      // on if multiple inputs are expected or not. If the field is required,
+      // an error is thrown.
       if (validAttr == "") {
         if ( type in required && required[type].indexOf(location) > -1 ) {
           throw "This field is required.";
         }
 
+        // Attributes that require multiple inputs are assigned an empty
+        // array, so that it is displayed as a list in the JSON file.
         if ( multiple ) {
             validAttr = [''];
         }
+
+        // Returns the blank attribute and ends the validation
+        // so it doesn't get further processed.
         return validAttr;
       }
 
+      // If the field being validated is "New Date" or "Update Date" 
+      // and the field contains a non-blank value, it will evaluate
+      // the date. Checks to make sure that the date is in the format
+      // yyyymmdd.
       if ( location == "New Date" || location == "Update Date" ) {
         var pattern = /^[0-9]{4}[0-1][0-9][0-3][0-9]$/;
         if ( !pattern.test(validAttr) ) {
           throw "Not a valid date format, use yyyymmdd."
         }
       }
-
+      
+      // If the field is supposed to contain multiple values,
+      // it will split the field's text into separate values
+      // and add each to a list.
       if ( multiple ) {
+        // Splits text based on newlines, accounts for OS differences.
         var valueList = validAttr.split(/\r\n|\n|\r/);
         var finalList = [];     
         for( var i = 0; i < valueList.length; i++ ) {
           var value = valueList[i];
-          value = value.trim();
+          value = value.trim(); // Removes unnecessary whitespace
         
           // Ignores blank values in a list
           if (value != "") {
@@ -166,13 +195,17 @@ $( function() {
           }    
   
         }  
+        // Assigns the value to be stored in JSON as
+        // the list with blank values ignored, and 
+        // unnecessary whitespace removed.
         validAttr = finalList; 
       }
     }   
+    // Error handler
     catch(err) {
-      addError( err, location );
-      $( '#error').show();
-      scrollTo('error');
+      addError( err, location ); // Adds error text to html page
+      $( '#error').show(); // Shows the error div on the html page
+      scrollTo('error'); // Scrolls to the error div with an animation
       return false;
     }
      
@@ -227,6 +260,10 @@ $( function() {
   // belong to.
   function addCheckBoxes ( checkBoxes, schemaType, dataLabel ) {
     var html = "";
+    // For each value in the checkBoxes array, it will
+    // create a checkbox input with its name/group being
+    // dataLabel, its class being the schemaType, and 
+    // leaving it checked as default.
     for ( var i = 0; i < checkBoxes.length; i++ ) {
       selectValue = checkBoxes[i];
       html += '<li class="ui-state-default">';
@@ -238,6 +275,14 @@ $( function() {
     return html;
   }
 
+  // Adds Help Menu text to the page so it can be
+  // displayed in a dialog box. 
+  // Type is the schema or tab type that the help button
+  // belongs to. 
+  // The menuText input is a list of JSON objects
+  // where  each object contains the name of the field
+  // that the help menu describes, a description of the field,
+  // and an example.
   function addMenu ( type, menuText ) {
     var name;
     var desc;

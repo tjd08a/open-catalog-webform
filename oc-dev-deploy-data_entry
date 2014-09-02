@@ -1,0 +1,11 @@
+#!/bin/bash
+filename=data_entry.tgz
+filepath='workspace/data_entry/'$filename
+deployfile="data_entry"
+echo writing to $filename
+tar -czf $filename $deployfile
+echo uploading $filename
+scp -i ~/.ssh/open_catalog_dev_key.pem $filename ubuntu@54.187.81.158:~/workspace/data_entry
+ssh -i ~/.ssh/open_catalog_dev_key.pem ubuntu@54.187.81.158 /home/ubuntu/deploy_catalog_to_build.sh $filepath
+ssh -i ~/.ssh/open_catalog_dev_key.pem ubuntu@54.187.81.158 /home/ubuntu/deploy_webapp.sh
+rm -rf $filename

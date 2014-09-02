@@ -1,0 +1,9 @@
+#!/bin/bash
+filename=wsgi.tgz
+filepath=workspace/wsgi/$filename
+deployfile="wsgi-scripts"
+tar -czf $filename $deployfile
+echo uploading $filename
+scp -i ~/.ssh/open_catalog_dev_key.pem $filename ubuntu@54.187.81.158:~/workspace/wsgi
+ssh -i ~/.ssh/open_catalog_dev_key.pem ubuntu@54.187.81.158 /home/ubuntu/workspace/deploy-wsgi $filepath $deployfile
+rm -rf $filename

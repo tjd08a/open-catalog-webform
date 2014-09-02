@@ -1,7 +1,7 @@
 # James Tobat
 # Last Updated: 7/16/14
-# Description: Script that finds all the unique terms of
-# a given JSON attribute that is located in the Open Catalog
+# Description: Script that provides data
+# to generate website.
 import json
 import sys
 import glob

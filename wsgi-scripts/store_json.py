@@ -9,9 +9,9 @@ import sys
 from collections import OrderedDict
 
 # These paths will need to change depending on server paths
-home_dir = "/home/jtobat/" # Home directory
-data_dir = home_dir + "active/open-catalog-generator/" # Open Catalog Generator Location
-wsgi_dir = home_dir + "wsgi/" # Location of wsgi scripts on server
+home_dir = "/home/ubuntu/" # Home directory
+data_dir = home_dir + "workspace/web_catalog/open-catalog-generator/" # Open Catalog Generator Location
+wsgi_dir = "/usr/local/www/wsgi-scripts/" # Location of wsgi scripts on server
 config_file = wsgi_dir + "config.json" # Configuration File
 save_path = "/var/www/html/data_entry/entries/" # Location where folders/json files should be stored
 

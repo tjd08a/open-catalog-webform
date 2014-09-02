@@ -9,13 +9,13 @@ import subprocess, shlex
 from collections import OrderedDict
 
 # These paths will need to change depending on server paths
-home_dir = "/home/jtobat/" # Home directory
-data_dir = home_dir+"test/open-catalog-generator/" # Open Catalog Generator Location
-wsgi_dir = home_dir+"wsgi/" # Location of wsgi scripts on server
-program_path = data_dir + "active_content.json" # Location of active program names
+home_dir = "/home/ubuntu/" # Home directory
+data_dir = home_dir+"workspace/web_catalog/open-catalog-generator/" # Open Catalog Generator Location
+catalog = data_dir + "darpa_open_catalog/" # Open Catalog Location
+wsgi_dir = "/usr/local/www/wsgi-scripts/" # Location of wsgi scripts on server
+program_path = catalog + "active_content.json" # Location of active program names
 script_path = data_dir + "scripts" # Location of scripts in Open Catalog
-catalog = data_dir + "darpa_open_catalog" # Open Catalog Location
-schemas_path = catalog + "/00-schema-examples.json" # Schema Template File
+schemas_path = catalog + "00-schema-examples.json" # Schema Template File
 config_file = wsgi_dir + "config.json" # Configuration File
 help_file = wsgi_dir + "help.json" # Help Menu File
 

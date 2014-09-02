@@ -72,7 +72,7 @@
         "Schema": "Software",
         "Menu":[
             {
-                "Name":"DARPA Program Name",
+                "Name":"DARPA Program",
                 "Description":"The name of the DARPA program for which the software was developed.",
                 "Example":"XDATA"
             },
@@ -167,7 +167,7 @@
         "Schema": "Publication",
         "Menu":[
             {
-                "Name":"DARPA Program Name",
+                "Name":"DARPA Program",
                 "Description":"The name of the DARPA program for which the publication was written.",
                 "Example":"XDATA"
             },

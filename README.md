@@ -13,8 +13,36 @@ In order to deploy the application a few things must happen first:
 * The paths on the **WSGI** scripts inside the **wsgi-scripts** folder must be updated
 with paths that match the directory structure of the server. The lines that must be changed have a comment above.
 * **WSGI** scripts can be stored in any folder on the server, but the Javascript sends requests to the **wsgi** 
-folder (/wsgi/) on the root directory. An **Alias** can be used to redirect requests to that folder to the actual
+folder (/wsgi/) on the root directory. An **Alias** can be used to redirect requests from that folder to the actual
 **wsgi** folder used.
+* There must already be a copy of the **open-catalog-generator** with the **darpa_open_catalog** inside of it.
+
+# Usage
+The web application will first ask for a first and last name, so it can be stored as a cookie. If you have already
+entered your name before, this will not happen. A web page will be generated that consists of tabs that match the 
+schema types given in the file **00-schema-examples.json** from the **darpa_open_catalog**. Certain schemas will
+not be featured in the application if you are not authorized. In each schema tab, you can enter in data for
+all of the attributes of that schema. Here are more usage tips:
+* To enter multiple values in a single textbox, press the **Enter** key.
+* Once you are done entering values, press the **Add** button where you will get a text preview of how your
+data will be stored in a file, or you will receive error notifications where you will need to fix the textboxes
+identified as having errors.
+* Once you are done creating entries, you must press the **Submit** button to send them to the server and have 
+them saved.
+* If you are confused about an input or even the **Add/Submit** buttons, click the **?** button next to it
+to open a help menu.
+
+# Configuration
+Aspects of the web application can be configured through the use of the **help.json** and **config.json** files
+inside of the **wsgi-scripts** folder. **help.json** is configured by the adding objects with a **Schema** and **Menu**
+key. Inside the **Menu** object is a list of help menus. Each help menu object has three keys: **Name**, **Description**, 
+and **Example**. To add a new help menu you must do this:
+* If the schema you want to create a menu for is not in **help.json**, copy and paste one of the **Schema**/**Menu** objects
+in the list and change the name of **Schema** value.
+* For the **Menu** key, add menu objects in a list for every help menu you wish to create. Each menu object contains these keys:
+  * "Name": The name of the input field that the help menu will be tied to.
+  * "Description": A brief description/overview of the input field. This should explain what type of information should be entered for it.
+  * "Example": An example of a proper input for the field.
 
 # Dependencies
 The web application relies on two Javascript libararies and they are:  
@@ -24,7 +52,7 @@ The web application relies on two Javascript libararies and they are:
 
 # Additional Help
 * See https://github.com/tjd08a/wsgi_boilerplate for additional details on how to
-configure a web server to run WSGI.
+configure a web server to run **WSGI**.
 * See https://github.com/ericwhyne/darpa_open_catalog and 
 https://github.com/ericwhyne/open-catalog-generator for details about the **Open
 Catalog**.

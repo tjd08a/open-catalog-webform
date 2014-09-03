@@ -38,12 +38,30 @@ inside of the **wsgi-scripts** folder. **help.json** is configured by the adding
 key. Inside the **Menu** object is a list of help menus. Each help menu object has three keys: **Name**, **Description**, 
 and **Example**. To add a new help menu you must do this:
 * If the schema you want to create a menu for is not in **help.json**, copy and paste one of the **Schema**/**Menu** objects
-in the list and change the name of **Schema** value.
+in the list and change the name of **Schema's** value.
 * For the **Menu** key, add menu objects in a list for every help menu you wish to create. Each menu object contains these keys:
   * "Name": The name of the input field that the help menu will be tied to.
   * "Description": A brief description/overview of the input field. This should explain what type of information should be entered for it.
   * "Example": An example of a proper input for the field.
 
+'''
+[
+    {
+        "Schema": "Office",
+        "Menu":[
+            {
+                "Name":"Office Name",
+                "Description":"The name of the DARPA office.",
+                "Example":"I20"
+            }
+        ]
+    }
+]
+'''
+
+The **config.json** file allows customization of other aspects of the web application. The keys and their values below change the following:
+* **Program Managers**: A list of users who are allowed to access the **Program** schema for editing. 
+  * Append a user's first and last name to this list to give them access to the **Program** schema.
 # Dependencies
 The web application relies on two Javascript libararies and they are:  
 * **JQuery - 2.1.1** - http://jquery.com/

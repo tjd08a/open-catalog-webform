@@ -94,7 +94,7 @@ This configuration option affects how the server creates and stores the json fil
 keys, an explanation for each is below:
   * **"Alias"**: Changes the lower half of the file name which is by default, the schema type converted to all lower-case. It will use the **Alias** value in place of the schema type.
   * **"Key"**: Changes the upper half of the file name which is by default, the user name connected via an underscore. This changes how the various user entries are sorted. For instance, using a key of
-  "DARPA Program Name" in the "Software" schema would result in all of the user's **Software** entries being grouped by the "DARPA Program Name" where each file had the pattern **"DARPA Program Name"-Alias.json**
+  "DARPA Program Name" in the "Software" schema would result in all of the user's **Software** entries being grouped by the "DARPA Program Name" where each file has the pattern **"DARPA Program Name"-Alias.json**
 ```
 "Storage":
         {

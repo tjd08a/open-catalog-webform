@@ -9,8 +9,9 @@ scripts used, they are written in Python.
 
 # Dependencies
 The web application relies on two Javascript libararies and they are:  
-* **JQuery - 2.1.1**
-* **JQuery UI - 1.11.0**
+* **JQuery - 2.1.1** - (http://jquery.com/)
+* **JQuery UI - 1.11.0** - (http://jqueryui.com/)
+* **JQuery Autosize** - (http://www.jacklmoore.com/autosize/)
 
 # Additional Help
 See https://github.com/tjd08a/wsgi_boilerplate for additional details on how to

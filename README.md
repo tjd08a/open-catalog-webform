@@ -68,7 +68,7 @@ The **config.json** file allows customization of other aspects of the web applic
         "Jerry Seinfeld"
     ]
 ```
-* **"Autocomplete"**: A list of input fields that should have the option of auto-complete.
+* **"Autocomplete"**: A list of input fields that have the option of auto-complete.
   * Add an input field to the list to give the option of autocomplete. **Caution**, this typically results in more data being transferred from the server so keep this to a minimum.
 ```
 "Autocomplete":[
@@ -77,7 +77,7 @@ The **config.json** file allows customization of other aspects of the web applic
     ]
 ```
 * **"Required"**: A list of objects where each object has a key that is a schema type, and its value is a list of input fields of that schema that must have non-blank values.
-  * To add a new schema, copy of paste a **Required** object to the list, change the key to the new schema type.
+  * To add a new schema, copy and paste a **Required** object to the list, change the key to the new schema type.
   * To add new required input fields for a schema, add the input/field name to the list.
 ```
 "Required":[
@@ -92,9 +92,9 @@ The **config.json** file allows customization of other aspects of the web applic
 * **"Storage"**: An object whose keys are the schema types and their values are another object, with keys **Alias** and **Key**.
 This configuration option affects how the server creates and stores the json files. User submmited entries are stored in the form **sort_value-alias.json**. A storage object for a schema contains two
 keys, an explanation for each is below:
-  * **"Alias"**: Changes the lower half of the file name which is by default, the schema type converted to all lower-case. It will use this **Alias** value in place of the schema type.
-  * **"Key"**: Changes the upper half of the file name which is by default, the user name connected via an underscore. This changes how the various user entries are sorted. E.g. using a key of
-  "DARPA Program Name" in the "Software" schema would result in all of the user's **Software** entries being grouped by the "DARPA Program Name" where each file had the pattern **"DARPA Program Name"-Alias**
+  * **"Alias"**: Changes the lower half of the file name which is by default, the schema type converted to all lower-case. It will use the **Alias** value in place of the schema type.
+  * **"Key"**: Changes the upper half of the file name which is by default, the user name connected via an underscore. This changes how the various user entries are sorted. For instance, using a key of
+  "DARPA Program Name" in the "Software" schema would result in all of the user's **Software** entries being grouped by the "DARPA Program Name" where each file had the pattern **"DARPA Program Name"-Alias.json**
 ```
 "Storage":
         {

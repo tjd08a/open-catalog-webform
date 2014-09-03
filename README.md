@@ -40,9 +40,9 @@ and **Example**. To add a new help menu you must do this:
 * If the schema you want to create a menu for is not in **help.json**, copy and paste one of the **Schema**/**Menu** objects
 in the list and change the name of **Schema's** value.
 * For the **Menu** key, add menu objects in a list for every help menu you wish to create. Each menu object contains these keys:
-  * "Name": The name of the input field that the help menu will be tied to.
-  * "Description": A brief description/overview of the input field. This should explain what type of information should be entered for it.
-  * "Example": An example of a proper input for the field.
+  * **"Name"**: The name of the input field that the help menu will be tied to.
+  * **"Description"**: A brief description/overview of the input field. This should explain what type of information should be entered for it.
+  * **"Example"**: An example of a proper input for the field.
 
 ```
 [
@@ -60,8 +60,57 @@ in the list and change the name of **Schema's** value.
 ```
 
 The **config.json** file allows customization of other aspects of the web application. The keys and their values below change the following:
-* **Program Managers**: A list of users who are allowed to access the **Program** schema for editing. 
+* **"Program Managers"**: A list of users who are allowed to access the **Program** schema for editing. 
   * Append a user's first and last name to this list to give them access to the **Program** schema.
+```
+"Program Managers":[
+        "George Costanza",
+        "Jerry Seinfeld"
+    ]
+```
+* **"Autocomplete"**: A list of input fields that should have the option of auto-complete.
+  * Add an input field to the list to give the option of autocomplete. **Caution**, this typically results in more data being transferred from the server so keep this to a minimum.
+```
+"Autocomplete":[
+        "Program Teams",
+        "Categories"
+    ]
+```
+* **"Required"**: A list of objects where each object has a key that is a schema type, and its value is a list of input fields of that schema that must have non-blank values.
+  * To add a new schema, copy of paste a **Required** object to the list, change the key to the new schema type.
+  * To add new required input fields for a schema, add the input/field name to the list.
+```
+"Required":[
+        {
+            "Office":[
+                "Office Name",
+                "Office Color"
+            ]
+        }
+]
+```
+* **"Storage"**: An object whose keys are the schema types and their values are another object, with keys **Alias** and **Key**.
+This configuration option affects how the server creates and stores the json files. User submmited entries are stored in the form **sort_value-alias.json**. A storage object for a schema contains two
+keys, an explanation for each is below:
+  * **"Alias"**: Changes the lower half of the file name which is by default, the schema type converted to all lower-case. It will use this **Alias** value in place of the schema type.
+  * **"Key"**: Changes the upper half of the file name which is by default, the user name connected via an underscore. This changes how the various user entries are sorted. E.g. using a key of
+  "DARPA Program Name" in the "Software" schema would result in all of the user's **Software** entries being grouped by the "DARPA Program Name" where each file had the pattern **"DARPA Program Name"-Alias**
+```
+"Storage":
+        {
+            "Program":
+                {
+                    "Alias":"",
+                    "Key":"DARPA Program Name"
+                },
+            "Publication":
+                {
+                    "Alias":"pubs",
+                    "Key":"DARPA Program"
+                }
+        }
+```
+  
 # Dependencies
 The web application relies on two Javascript libararies and they are:  
 * **JQuery - 2.1.1** - http://jquery.com/

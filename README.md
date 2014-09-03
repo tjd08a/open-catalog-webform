@@ -44,7 +44,7 @@ in the list and change the name of **Schema's** value.
   * "Description": A brief description/overview of the input field. This should explain what type of information should be entered for it.
   * "Example": An example of a proper input for the field.
 
-'''
+```
 [
     {
         "Schema": "Office",
@@ -57,7 +57,7 @@ in the list and change the name of **Schema's** value.
         ]
     }
 ]
-'''
+```
 
 The **config.json** file allows customization of other aspects of the web application. The keys and their values below change the following:
 * **Program Managers**: A list of users who are allowed to access the **Program** schema for editing. 

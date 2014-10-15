@@ -4,7 +4,7 @@
         "Menu":
             {
                 "Name":"Add and Submit",
-                "Description":"Press the Add button to add your entry to the list of entries that will be sent to the server, a validation will also be performed on all the data present in your entry. Pressing the Submit button will send all of your entries to the server, and an alert menu will appear if your submission was sent, and was successful. In summary, you must press Add button and then the Submit button for your entries to be processed by the server."
+                "Description":"Press the Add button to add your entry to the list of entries that will be sent to the server. Your data will be validated when you click Add. Pressing the Submit button will send all of your Added entries to the server, and you will see an alert menu if your submission was sent, and was successful. For your entries to be processed by the server, you must first click the Add button, then the Submit button."
             }
      
     },
@@ -33,12 +33,12 @@
             },  
             {
                 "Name":"Display Software Columns",
-                "Description":"These are the titles of all of the columns that will be publicly displayed on your program’s software page. They correspond to the fields of meta data requested about each software component. Arrange the checkboxes in the order in which you want them displayed, and uncheck any boxes that you do not want displayed on your page.",
+                "Description":"These are the titles of all of the columns that will be publicly displayed on your program’s software page. They correspond to the fields of meta data requested about each software component. Drag and drop the checkboxes into the order in which you want them displayed, and uncheck any boxes that you do not want displayed on your page.",
                 "Example":"Team, Project, Description, Instructional Material, Category, Code, Stats, License"
             },
             {
                 "Name":"Display Pubs Columns",
-                "Description":"These are the titles of all of the columns that will be publicly displayed on your program’s publication page. They correspond to the fields of meta data requested about each publication component. Arrange the checkboxes in the order in which you want them displayed, and uncheck any boxes that you do not want displayed on your page.",
+                "Description":"These are the titles of all of the columns that will be publicly displayed on your program’s publication page. They correspond to the fields of meta data requested about each publication component. Drag and drop the checkboxes into the order in which you want them displayed, and uncheck any boxes that you do not want displayed on your page.",
                 "Example":"Team, Title, Link"
             },
             {
@@ -63,7 +63,7 @@
             },    
             {
                 "Name":"Image",
-                "Description":" If you would like to include an image for your program, include its file name (online location) here. You will also need to submit the image itself along with the rest of your materials. If you choose not to include an image, please enter Not Available.",
+                "Description":" If you would like to include an image for your program, include its file name (online location) here. You will also need to submit the image itself along with the rest of your materials. If you choose not to include an image, please leave blank.",
                 "Example":"XDATA-image.png"
             }
         ]    
@@ -78,7 +78,7 @@
             },
             {
                 "Name":"Software",
-                "Description":"The name of the software itself.",
+                "Description":"The name of the software package itself.",
                 "Example":"Tangelo"
             },
             {
@@ -88,57 +88,57 @@
             },
             {
                 "Name":"Contributors",
-                "Description":"The names of additional parties contributing to the advancement of the code repo. If there are none, please enter 'Not Available'.",
+                "Description":"The names of additional parties contributing to the advancement of the code repo. If there are none, please leave blank.",
                 "Example":"University of Southern California"
             },
             {
                 "Name":"Sub-contractors",
-                "Description":"The names of contractors hired by the Program Teams. If there are none, please enter 'Not Available'.",
+                "Description":"The names of contractors hired by the Program Teams. If there are none, please leave blank.",
                 "Example":"Giant Oak, Inc."
             },
             {
                 "Name":"Internal Link",
-                "Description":"A link to the software for internal use, which will not be shared publicly. If the software has no site for internal use, enter Not Available.",
+                "Description":"A link to the software for internal use, which will not be shared publicly. If the software has no site for internal use, please leave blank.",
                 "Example":"https://xd-wiki.xdata.data-tactics-corp.com:8443/display/VIS/Visual+Design+Environment-Kitware+Home"
             },  
             {
                 "Name":"External Link",
-                "Description":"A link to your software’s website. This will be publicly visible. If your software has no public website, please enter Not Available.",
+                "Description":"A link to your software’s website. This will be publicly visible. If your software has no public website, please leave blank.",
                 "Example":"http://kitware.github.io/tangelo/"
             }, 
             {
                 "Name":"License",
-                "Description":"The licensing regime for your software.",
+                "Description":"The licensing regime for your software. Please review the license-content.json file for the appropriate list of abbreviations to be used in this field.",
                 "Example":"ALv2"
             },
             {
                 "Name":"Platform Requirements",
-                "Description":"List any requirements the software may have for server settings or setup. If there are none, enter 'Not Available'.",
+                "Description":"List any requirements the software may have for server settings or setup. If there are none, please leave blank.",
                 "Example":"Linux Redhat"
             },
             {
                 "Name":"Dependent Modules",
-                "Description":"If the software has any additional optional components that can extend or expand the software, list their names here. If there are none, enter 'Not Available'.",
+                "Description":"If the software has any additional optional components that can extend or expand the software, list their names here. If there are none, please leave blank.",
                 "Example":"Tangelo Mapping Extension"
             },
             {
                 "Name":"Dependent Module URLs",
-                "Description":"List the URLs of the Dependent Modules' public code repositories (if applicable). If there are none, enter 'Not Available'.",
+                "Description":"List the URLs of the Dependent Modules' public code repositories (if applicable). If there are none, please leave blank.",
                 "Example":"https://github.com/Kitware/tangelomappingextension.git"
             },
             {
                 "Name":"Component Modules",
-                "Description":"If the software requires any additional components in order to run, list them here. If there are none, enter 'Not Available'.",
+                "Description":"If the software requires any additional components in order to run, list them here. If there are none, please leave blank.",
                 "Example":"Ozone Widget Framework"
             },
             {
                 "Name":"Component Module URLs",
-                "Description":"List the URLs of the Component Modules' public code repositories (if applicable). If there are none, enter 'Not Available'.",
+                "Description":"List the URLs of the Component Modules' public code repositories (if applicable). If there are none, please leave blank.",
                 "Example":"https://github.com/ozoneplatform/owf.git"
             },
             {
                 "Name":"Industry",
-                "Description":"If your software is targeted at one specific industry, include that industry here. If there are none, enter 'Not Available'.",
+                "Description":"If your software is targeted at one specific industry, include that industry here. If there are none, please leave blank.",
                 "Example":"Medicine"
             },
             {

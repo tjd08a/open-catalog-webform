@@ -4,7 +4,7 @@
         "Menu":
             {
                 "Name":"Add and Submit",
-                "Description":"Press the Add button to add your entry to the list of entries that will be sent to the server. Your data will be validated when you click Add. Pressing the Submit button will send all of your Added entries to the server, and you will see an alert menu if your submission was sent, and was successful. For your entries to be processed by the server, you must first click the Add button, then the Submit button."
+                "Description":"Press the Add button to add your entry to the list of entries that will be sent to the server. Your data will be validated when you click Add. Pressing the Submit button will send all of your Added entries to the server, and you will see an alert menu if your submission was sent, and was successfully received. For your entries to be processed by the server, you must first click the Add button, then the Submit button."
             }
      
     },
@@ -148,17 +148,17 @@
             },
             {
                 "Name":"Public Code Repo",
-                "Description":"If your code is publicly available on the Internet, put the link to the code here. This link will not be clickable, as it may be necessary to open it outside of a browser environment in order to view the code repo itself. If your code is not publicly available, enter 'Not Yet Available'. If your software will be publicly available in the future, please place the anticipated future date in this field; preferably in ISO 8601 format (i.e. 2016-02-29 or 2016-02).",
+                "Description":"If your code is publicly available on the Internet, put the link to the code here. This link will not be clickable, as it may be necessary to open it outside of a browser environment in order to view the code repo itself. If your code is not publicly available, enter 'Not Yet Available'. If your software will be publicly available in the near future, please place the anticipated future date in this field; preferably in ISO 8601 format (i.e. 2016-02-29 or 2016-02).",
                 "Example":"https://github.com/Kitware/tangelo.git"
             }, 
             {
                 "Name":"Categories",
-                "Description":"The category (or categories) that this particular piece of software fits into to differentiate it from other pieces of software in the same DARPA program. Categories are likely to be domain specific to your DARPA program. XDATA has three: Analytics, Visualization, and Infrastructure. Categories should be internally consistent, so look at those already in use to consider normalization of this data point.",
+                "Description":"The category (or categories) that this particular piece of software fits into to differentiate it from other pieces of software in the same DARPA program. Categories are likely to be domain specific to your DARPA program. XDATA has three: Analytics, Visualization, and Infrastructure. Categories should be internally consistent, so look at those already in use to consider normalization of this data point. This field is pre-populated with categories currently live on the site.",
                 "Example":"Visualization"
             },
             {
                 "Name":"Description",
-                "Description":"Describe what the software is, what it does, and why it’s useful. A non-expert should be able to understand this.",
+                "Description":"Describe what the software is, what it does, and why it’s useful. A non-expert should be able to understand this. Please append a parenthetical listing of the primary coding language used in the program’s development.",
                 "Example":"Tangelo provides a flexible HTML5 web server architecture that cleanly separates your web applications (pure JavaScript, HTML, and CSS) and web services (pure Python). This software is bundled with some great tools to get you started. (JavaScript/Python)"
             }         
         ]    
@@ -173,7 +173,7 @@
             },
             {
                 "Name":"Authors",
-                "Description":"The names of the publication’s authors in First Name Middle Initial Last Name order.",
+                "Description":"The names of the publication’s authors in First Name, Middle Initial, Last Name order.",
                 "Example":"Joseph A. Cottam"
             },
             {
@@ -188,22 +188,22 @@
             },  
             {
                 "Name":"Title",
-                "Description":"The publication’s title, in standard US English title capitalization format.",
+                "Description":"The publication’s title, in standard US English title capitalization format and omitting any final period.",
                 "Example":"Overplotting: Unified Solutions under Abstract Rendering"
             }, 
             {
                 "Name":"Categories",
-                "Description":"Selected based on the latest classification tree by ACM: http://www.acm.org/about/class/class/2012.",
+                "Description":"Selected based on the latest classification tree by ACM: http://www.acm.org/about/class/class/2012. If there are none, please leave blank.",
                 "Example":"Software Architectures"
             },
             {
                 "Name":"Subcategories",
-                "Description":"If the categories given need to be broken down further, do so by specifying subcategories here, following the same principles listed for Categories. If not, please enter 'Not Available'.",
+                "Description":"If the categories given need to be broken down further, do so by specifying subcategories here, following the same principles listed for Categories. If there are none, please leave blank. This field is pre-populated with categories currently live on the site.",
                 "Example":"Data Abstraction"
             },
             {
                 "Name":"ACM 1998 classification code",
-                "Description":"The appropriate ACM classification code(s) for the publication.",
+                "Description":"The appropriate ACM classification code(s) for the publication. If there are none, please leave blank.",
                 "Example":"D.2.11"
             }
         ]    
